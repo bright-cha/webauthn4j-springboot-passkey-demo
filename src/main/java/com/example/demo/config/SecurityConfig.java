@@ -16,9 +16,11 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable) // CSRF 비활성화 (개발 단계)
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/", "/logout").authenticated()
                         .anyRequest().permitAll() // 모든 요청 허용 (개발 단계)
                 )
                 .formLogin(form -> form // 일반 로그인 설정
+                        .loginPage("/login")
                         .defaultSuccessUrl("/") // 로그인 성공 시 이동할 기본 URL
                         .permitAll() // 로그인 페이지는 인증 없이 접근 가능
                 )
