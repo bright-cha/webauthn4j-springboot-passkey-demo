@@ -37,7 +37,8 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-	implementation 'com.webauthn4j:webauthn4j-spring-security-core:0.11.0.RELEASE'
+	implementation 'com.webauthn4j:webauthn4j-spring-security-core:0.10.0.RELEASE'
+	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-cbor'
 }
 
 tasks.named('test') {
