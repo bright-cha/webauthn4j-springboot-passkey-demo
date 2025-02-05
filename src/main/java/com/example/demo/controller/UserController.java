@@ -2,8 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.UserCreateForm;
 import com.example.demo.service.UserService;
-import com.webauthn4j.springframework.security.WebAuthnRegistrationRequestValidationResponse;
-import com.webauthn4j.springframework.security.WebAuthnRegistrationRequestValidator;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +19,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class UserController {
 
     private final UserService userService;
-    private final WebAuthnRegistrationRequestValidator registrationRequestValidator;
 
     /**
      * 로그인/회원가입/로그아웃 페이지 요청
@@ -45,17 +42,8 @@ public class UserController {
                 return "signup";
             }
 
-            WebAuthnRegistrationRequestValidationResponse registrationResponse =
-                    registrationRequestValidator.validate(
-                            request,
-                            userCreateForm.authenticator().clientDataJSON(),
-                            userCreateForm.authenticator().attestationObject(),
-                            userCreateForm.authenticator().transports(),
-                            userCreateForm.authenticator().clientExtensions()
-                    );
-
             // 사용자 등록 로직 처리...
-            userService.save(userCreateForm.username(), userCreateForm.password());
+            userService.save(request, userCreateForm);
 
         } catch (RuntimeException ex) {
             model.addAttribute("errorMessage", "예기치 않은 오류가 발생했습니다.");

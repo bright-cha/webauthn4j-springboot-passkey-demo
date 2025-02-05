@@ -7,6 +7,7 @@ import com.webauthn4j.data.PublicKeyCredentialType;
 import com.webauthn4j.data.attestation.statement.COSEAlgorithmIdentifier;
 import com.webauthn4j.springframework.security.WebAuthnAuthenticationProvider;
 import com.webauthn4j.springframework.security.config.configurers.WebAuthnLoginConfigurer;
+import com.webauthn4j.springframework.security.credential.WebAuthnCredentialRecordManager;
 import com.webauthn4j.springframework.security.credential.WebAuthnCredentialRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -20,7 +21,6 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -122,7 +122,7 @@ public class WebSecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/signup").permitAll()  // GET /signup은 인증 없이 접근 가능
                 .requestMatchers(HttpMethod.POST, "/signup").permitAll() // POST /signup도 인증 없이 접근 가능
                 // 기타 모든 요청은 아래 ExpressionManager를 통과:
-                //  '@webAuthnSecurityExpression.isWebAuthnAuthenticated(authentication) || hasAuthority('SINGLE_FACTOR_AUTHN_ALLOWED')'
+//                  '@webAuthnSecurityExpression.isWebAuthnAuthenticated(authentication) || hasAuthority('SINGLE_FACTOR_AUTHN_ALLOWED')'
                 .anyRequest().access(getWebExpressionAuthorizationManager())
         );
 

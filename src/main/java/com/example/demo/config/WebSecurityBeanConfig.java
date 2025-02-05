@@ -1,5 +1,6 @@
 package com.example.demo.config;
 
+import com.example.demo.dao.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.cbor.CBORFactory;
 import com.webauthn4j.WebAuthnManager;
@@ -11,20 +12,26 @@ import com.webauthn4j.springframework.security.challenge.ChallengeRepository;
 import com.webauthn4j.springframework.security.challenge.HttpSessionChallengeRepository;
 import com.webauthn4j.springframework.security.converter.jackson.WebAuthn4JSpringSecurityJSONModule;
 import com.webauthn4j.springframework.security.credential.InMemoryWebAuthnCredentialRecordManager;
+import com.webauthn4j.springframework.security.credential.WebAuthnCredentialRecordManager;
 import com.webauthn4j.springframework.security.credential.WebAuthnCredentialRecordService;
 import com.webauthn4j.springframework.security.options.*;
 import com.webauthn4j.springframework.security.server.ServerPropertyProvider;
 import com.webauthn4j.springframework.security.server.ServerPropertyProviderImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import com.webauthn4j.springframework.security.credential.WebAuthnCredentialRecordManager;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 
 @Configuration // Spring 설정 클래스
 public class WebSecurityBeanConfig {
+
+    @Bean
+    public UserDetailsService userDetailsService(UserRepository userRepository) {
+        return new CustomUserDetailsService(userRepository);
+    }
 
     // 비밀번호 인코딩을 위한 BCryptPasswordEncoder 빈
     @Bean

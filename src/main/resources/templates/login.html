@@ -10,7 +10,8 @@
 <h1>로그인</h1>
 
 <form action="/login" method="post" id="login-form">
-    <label for="username">아이디:</label>
+
+        <label for="username">아이디:</label>
     <input type="text" id="username" name="username">
     <br>
     <label for="password">비밀번호:</label>
@@ -21,6 +22,7 @@
             data-toggle="tooltip" data-placement="bottom"
             title="Passkey Login">Passkey Login</button>
 
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
     <input id="credentialId" name="credentialId" type="hidden" />
     <input id="clientDataJSON" name="clientDataJSON" type="hidden" />
     <input id="authenticatorData" name="authenticatorData" type="hidden" />
