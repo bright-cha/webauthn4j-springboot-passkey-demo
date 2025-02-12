@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.UserCreateForm;
 import com.example.demo.service.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,6 +49,8 @@ public class UserController {
         } catch (RuntimeException ex) {
             model.addAttribute("errorMessage", "예기치 않은 오류가 발생했습니다.");
             return "signup";
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
 
         redirectAttributes.addFlashAttribute("successMessage", "회원가입이 완료되었습니다.");

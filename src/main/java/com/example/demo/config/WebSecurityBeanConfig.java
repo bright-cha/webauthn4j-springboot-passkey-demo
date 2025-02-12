@@ -1,18 +1,19 @@
 package com.example.demo.config;
 
+import com.example.demo.dao.UserCredentialRepository;
 import com.example.demo.dao.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.cbor.CBORFactory;
 import com.webauthn4j.WebAuthnManager;
+import com.webauthn4j.converter.AttestationObjectConverter;
 import com.webauthn4j.converter.util.ObjectConverter;
 import com.webauthn4j.metadata.converter.jackson.WebAuthnMetadataJSONModule;
 import com.webauthn4j.springframework.security.WebAuthnRegistrationRequestValidator;
 import com.webauthn4j.springframework.security.WebAuthnSecurityExpression;
 import com.webauthn4j.springframework.security.challenge.ChallengeRepository;
 import com.webauthn4j.springframework.security.challenge.HttpSessionChallengeRepository;
+import com.webauthn4j.springframework.security.converter.Base64UrlStringToAttestationObjectConverter;
 import com.webauthn4j.springframework.security.converter.jackson.WebAuthn4JSpringSecurityJSONModule;
-import com.webauthn4j.springframework.security.credential.InMemoryWebAuthnCredentialRecordManager;
-import com.webauthn4j.springframework.security.credential.WebAuthnCredentialRecordManager;
 import com.webauthn4j.springframework.security.credential.WebAuthnCredentialRecordService;
 import com.webauthn4j.springframework.security.options.*;
 import com.webauthn4j.springframework.security.server.ServerPropertyProvider;
@@ -27,6 +28,11 @@ import org.springframework.security.provisioning.UserDetailsManager;
 
 @Configuration // Spring 설정 클래스
 public class WebSecurityBeanConfig {
+
+    @Bean
+    public Base64UrlStringToAttestationObjectConverter base64UrlStringToAttestationObjectConverter(ObjectConverter objectConverter) {
+        return new Base64UrlStringToAttestationObjectConverter(objectConverter);
+    }
 
     @Bean
     public UserDetailsService userDetailsService(UserRepository userRepository) {
@@ -48,10 +54,10 @@ public class WebSecurityBeanConfig {
     // InMemory 기반 WebAuthnCredentialRecordManager
     // WebAuthn 등록된 Credential 데이터를 메모리에 저장하여 관리
     // 각 서비스 별로 공개 인증키를 메모리에 저장하여 관리하기 위함.
-    @Bean
-    public WebAuthnCredentialRecordManager webAuthnAuthenticatorManager(){
-        return new InMemoryWebAuthnCredentialRecordManager();
-    }
+//    @Bean
+//    public WebAuthnCredentialRecordManager webAuthnAuthenticatorManager(){
+//        return new InMemoryWebAuthnCredentialRecordManager();
+//    }
 
     // JSON, CBOR 직렬화/역직렬화를 위한 ObjectConverter
     @Bean
